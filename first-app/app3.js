@@ -1,0 +1,2 @@
+// One of the core components of node is the consept of event. A lot node core component are based on this event.
+// An event is basically a signal that indicate that something has happened in our application.
