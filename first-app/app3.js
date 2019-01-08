@@ -31,3 +31,9 @@ emitter.on("myevent", function(eventArg) {
 emitter.emit("myevent", { id: 1, url: "http://emeksense.com" });
 
 // Simple quiz
+
+emitter.on("logEvent", eventArg => {
+  console.log("The quiz is so simple", eventArg);
+});
+
+emitter.emit("logEvent", { data: "message" });
