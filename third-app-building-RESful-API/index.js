@@ -79,7 +79,7 @@ app.post('/api/authors', (req, res) => {
     };
 
     const result = Joi.validate(req.body, schema);
-    console.log(result);
+    //console.log(result);
     if (result.error) {
         res.status(400).send(result.error.details[0].message);
         return;
@@ -103,6 +103,40 @@ app.post('/api/authors', (req, res) => {
     authors.push(author);
     res.send(author);
 });
+
+
+// Implementing an update (PUT) request.
+app.put('/api/authors/:id', (req, res) => {
+    // Look up for the author
+    const author = authors.find(a => a.id === parseInt(req.params.id));
+    // if not existing, return 404
+    if (!author) {
+        res.status(404).send('Author doesnt exist');
+    }
+
+    // Validate 
+    // If invalid, return 400 - Bad request.
+    const result = validateAuthor(req.body);
+    // one can actually rewrite the code above with object destructuring in js as "const {error} = validateAuthor(req.body);"   
+    if (result.error) {
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    // Update author.
+    author.name = req.body.name;
+    // Return the updated author
+    res.send(author);
+});
+
+
+function validateAuthor(author) {
+    const schema = {
+        name: Joi.string().min(3).required()
+    };
+    return Joi.validate(author, schema);
+}
+
 
 // Never trust what the client sends to you. Always validate every input.
 
