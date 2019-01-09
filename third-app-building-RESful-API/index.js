@@ -65,7 +65,7 @@ app.get('/api/authors/:id', (req, res) => {
     const author = authors.find(a => a.id === parseInt(req.params.id));
     if (!author) {
         // return 404, ie object not found. 
-        res.status(404).send(`The author with id: ${req.params.id} was not found`);
+        return res.status(404).send(`The author with id: ${req.params.id} was not found`);
     }
 
     res.send(author);
@@ -111,7 +111,7 @@ app.put('/api/authors/:id', (req, res) => {
     const author = authors.find(a => a.id === parseInt(req.params.id));
     // if not existing, return 404
     if (!author) {
-        res.status(404).send('Author doesnt exist');
+        return res.status(404).send('Author doesnt exist');
     }
 
     // Validate 
@@ -130,6 +130,30 @@ app.put('/api/authors/:id', (req, res) => {
 });
 
 
+
+app.delete('/api/authors/:id', (req, res) => {
+
+    // Get the author to be deleted
+    const author = authors.find(a => a.id === parseInt(req.params.id));
+
+    // Return 404 if author doent exist
+    if (!author) {
+        return res.status(404).send('Author you want to delete doesnt exist');
+    }
+
+    // Remove the author from authors list
+    const deletedAuthor = authors.pop(author);
+    // OR
+    // const index = authors.indexOf(author);
+    // authors.splice(index, 1);
+
+    // Send report to user
+    res.send(deletedAuthor);
+
+
+})
+
+// Never trust what the client sends to you. Always validate every input.
 function validateAuthor(author) {
     const schema = {
         name: Joi.string().min(3).required()
@@ -138,7 +162,9 @@ function validateAuthor(author) {
 }
 
 
-// Never trust what the client sends to you. Always validate every input.
+
+
+
 
 //Using enviroment variable to set port dinamically
 const port = process.env.PORT || 3210;
