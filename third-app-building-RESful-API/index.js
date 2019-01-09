@@ -13,10 +13,20 @@ const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+
+
+// Configuring enviromnments using NODE_ENV /  app.get('env'). The difference is that when not set the formal returns undefined while the later returns development as shwon below:
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`app: ${app.get('env')}`);
+
+
+
 //Enabling parsing of json object in the body of the request
 app.use(express.json());
 // express.urlencoded() middleware passes incoming request with url encoded payloads. eg a url like ...key=value&key=value
-app.use(express.urlencoded());
+app.use(express.urlencoded({
+    extended: true
+}));
 // Another express middleware is known as static. this will help render any static file you put in the root of your app eg. http://localhost:3210/readme.txt
 app.use(express.static('public'));
 
@@ -24,8 +34,12 @@ app.use(express.static('public'));
 // Helmet helps you secure your Express apps by setting various HTTP headers.
 app.use(helmet());
 
-// morgan('tiny') is used for logging requests.
-app.use(morgan('tiny'));
+if (app.get('env') === 'development') {
+    // morgan('tiny') is used for logging requests.
+    app.use(morgan('tiny'));
+    console.log('Morgan enabled....');
+}
+
 
 // One of the core concept in express I need to know is "Middleware" or "Middleware function".
 // So in express, every route handler is technically a middleware function. Also express.json() we called ealier is also a middleware function.
@@ -41,7 +55,7 @@ app.use(logger.auth);
 
 const authors = [{
         id: 1,
-        name: 'Christian Egwim '
+        name: 'Chris tian Egwim '
     },
     {
         id: 2,
