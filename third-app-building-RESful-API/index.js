@@ -5,12 +5,39 @@
 //A framwork gives your application a proper structure
 // Express function can be used to carry http verbs such as get, post, put, delete...
 
-const Joi = require('joi');
+
 const express = require('express');
 const app = express();
 
+const Joi = require('joi');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
 //Enabling parsing of json object in the body of the request
 app.use(express.json());
+// express.urlencoded() middleware passes incoming request with url encoded payloads. eg a url like ...key=value&key=value
+app.use(express.urlencoded());
+// Another express middleware is known as static. this will help render any static file you put in the root of your app eg. http://localhost:3210/readme.txt
+app.use(express.static('public'));
+
+// Calling the hlment middleware 
+// Helmet helps you secure your Express apps by setting various HTTP headers.
+app.use(helmet());
+
+// morgan('tiny') is used for logging requests.
+app.use(morgan('tiny'));
+
+// One of the core concept in express I need to know is "Middleware" or "Middleware function".
+// So in express, every route handler is technically a middleware function. Also express.json() we called ealier is also a middleware function.
+// We can also create custom middleware functions as shown below. So an express app is nothing but bunch of middleware functions.
+const logger = require('./logger');
+app.use(logger.log);
+
+// Note middleware functions are called in sequence.
+app.use(logger.auth);
+
+
+
 
 const authors = [{
         id: 1,
@@ -142,13 +169,12 @@ app.delete('/api/authors/:id', (req, res) => {
     }
 
     // Remove the author from authors list
-    const deletedAuthor = authors.pop(author);
-    // OR
-    // const index = authors.indexOf(author);
-    // authors.splice(index, 1);
+
+    const index = authors.indexOf(author);
+    authors.splice(index, 1);
 
     // Send report to user
-    res.send(deletedAuthor);
+    res.send(author);
 
 
 })
