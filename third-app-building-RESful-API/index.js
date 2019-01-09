@@ -12,10 +12,31 @@ const app = express();
 const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const config = require('config');
+
+// Sometimes you need to return html mockup to clients, in such case you need to use templating engine. eg of templating engines includes Pug, Mustache, EJS, 
+app.set('view engine', 'pug');
+// Optionally one can also set the default folder path to all the view by:
+app.set('views', './views');
+
+app.get('/api', (req, res) => {
+    res.render('index', {
+        title: 'My RESful App',
+        message: 'hello'
+    });
+});
 
 
+// Configuration
+// Installing the config lib and creating a folder by name config and storing some files in it will make the code below to pick the variables base on enviroment as shwon below:
+console.log('Application Name:' + config.get('name'));
+console.log('Mail Server:' + config.get('mail.host'));
 
-// Configuring enviromnments using NODE_ENV /  app.get('env'). The difference is that when not set the formal returns undefined while the later returns development as shwon below:
+// In custom-environment-variables.json file inside the config folder, we define the mapping of configuration settings to environmental variables
+console.log('Mail Password:' + config.get('mail.password'));
+
+
+// Setting up enviromnments using NODE_ENV or  app.get('env'). The difference is that when not set the formal returns undefined while the later returns development as shwon below:
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 console.log(`app: ${app.get('env')}`);
 
