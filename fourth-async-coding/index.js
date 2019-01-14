@@ -12,11 +12,11 @@ getUser2(1, user => {
     console.log("User", user);
 
     // Get the repositories
-    getRepositories(user.gitHubUsername, repositories => {
-        getCommits(repo, commits => {});
-        console.log("List of Repo", repositories);
-
-        // Note the nested like structure of a call  back like seen here s what is called CALL BACKHELL or CHRISTMASS TREE STRUCTURE
+    getRepositories(user.gitHubUsername, (repositories) => {
+        getCommits(repositories[0], commits => {
+            console.log("List of Repo", commits);
+            // Note the nested like structure of a call  back like seen here s what is called CALL BACKHELL or CHRISTMASS TREE STRUCTURE
+        });
     });
 });
 
@@ -34,7 +34,7 @@ function getUser(id) {
 
 //So there are patterns for dealing with Asynchronious codes: name: 1, Callback, promises and Async/await
 
-//1. Callback, A call bank i a function that will be called when the rsult of an asyn is ready.
+//1. Callback, A callback is a function that will be called when the rsult of an asyn is ready.
 function getUser2(id, callback) {
     setTimeout(() => {
         console.log("Reading a user from a database...");
@@ -49,6 +49,13 @@ function getRepositories(username, callback) {
     setTimeout(() => {
         console.log("Calling Github API...");
         callback(["repo1", "repo2", "repo3"]);
+    }, 2000);
+}
+
+function getCommits(repo, callback) {
+    setTimeout(() => {
+        console.log("Calling Github API for commits...");
+        callback(['commit']);
     }, 2000);
 }
 
