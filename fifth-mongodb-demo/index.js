@@ -60,3 +60,36 @@ async function getCourses() {
 }
 
 getCourses();
+
+// Comparason operators available in mongoose for mongo
+// eg (equal)
+// ne (not equal)
+// gt (greater than)
+// gte (greater than or equal to)
+// lt (less than)
+// lte (less than or equal to)
+// in (in)
+// nin (not in)
+
+async function getCourses2() {
+  const courses = await Course
+    .find({
+      price: {
+        $gte: 10,
+        $lte: 20,
+        $in: [10, 20, 35]
+      }
+    })
+    .limit(10)
+    .sort({
+      name: 1
+    })
+    .select({
+      name: 1,
+      tags: 1
+    });
+
+  console.log(courses);
+}
+
+getCourses2();
