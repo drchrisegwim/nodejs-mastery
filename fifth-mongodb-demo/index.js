@@ -93,3 +93,119 @@ async function getCourses2() {
 }
 
 getCourses2();
+
+// Logical query operators: or & and.
+async function getCourses3() {
+  const courses = await Course
+    .find()
+    .or([{
+      author: 'Christian'
+    }, {
+      isPublished: true
+    }])
+    //or
+    .and([{
+      author: 'Christian'
+    }, {
+      isPublished: true
+    }])
+    .limit(10)
+    .sort({
+      name: 1
+    })
+    .select({
+      name: 1,
+      tags: 1
+    });
+
+  console.log(courses);
+}
+
+getCourses3();
+
+// regular expression
+
+async function getCourses4() {
+  const courses = await Course
+    // Starts with Chris
+    .find({
+      author: /^Chris/
+    })
+    // Ends with Egwim
+    .find({
+      author: /Egwim$/
+    })
+    // Case insensitive
+    .find({
+      author: /egwim$/i
+    })
+    // Contains egwim
+    .find({
+      author: /.*egwim.*/
+    })
+    .limit(10)
+    .sort({
+      name: 1
+    })
+    .count();
+
+
+  console.log(courses);
+}
+
+getCourses4();
+
+// Update Document
+
+async function updateCourse(id) {
+  // Approach: Query first
+  // findById()
+  //Modify its properties
+  // save()
+
+  const course = await Course.findById(id);
+  if (!course) {
+    return;
+  }
+  course.isPublished = true;
+  course.author = 'Another Author';
+
+  const result = await course.save();
+  console.log(result);
+
+
+
+
+  // Approach: Update first
+  // Update directly
+  // Optionaly: get the updated document.
+
+  const result2 = await Course.update({
+    _id: id
+  }, {
+    $set: {
+      author: 'Emeksense',
+      isPublished: false
+    }
+  });
+
+  console.log(result2);
+
+}
+
+updateCourse('5c3f2660b476bc2b70b8cb34');
+
+// Removing Documents
+
+async function removeCourse(id) {
+  const result = Course.deleteOne({
+    _id: id
+  });
+  console.log(result);
+  // To return the object after deleting:
+  const course = await Course.findByIdAndRemove(id);
+  console.log(course);
+
+}
+
+removeCourse('5c3f2660b476bc2b70b8cb34');
