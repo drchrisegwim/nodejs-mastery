@@ -17,7 +17,9 @@ const courseSchema = new mongoose.Schema({
     caterory: {
         type: String,
         required: true,
-        enum: ['web', 'mobile', 'network']
+        enum: ['web', 'mobile', 'network'],
+        lowercase: true,
+        trim: true
     },
     author: String,
     // Custom Validation
@@ -27,7 +29,7 @@ const courseSchema = new mongoose.Schema({
             validator: function (v) {
                 return v && v.length > 0;
             },
-            message: 'A course should have at least one tag ooh!!!'
+            message: 'A course should ha ve at least one tag ooh!!!'
         }
     },
     date: {
@@ -41,7 +43,9 @@ const courseSchema = new mongoose.Schema({
             return this.isPublished;
         },
         min: 10,
-        max: 200
+        max: 200,
+        get: v => Math.round(v),
+        set: v => Math.round(v)
 
     }
 
