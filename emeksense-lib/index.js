@@ -8,35 +8,53 @@ app.use(express.json());
 
 const Joi = require("joi");
 
-const books = [
-  { id: 1, title: "Nodejs Mastry" },
-  { id: 2, title: "Introduction to algorithm" },
-  { id: 3, title: "How to make money" },
-  { id: 4, title: "Purpose driven life" },
-  { id: 5, title: "React js fundamentals" }
+const books = [{
+    id: 1,
+    title: "Nodejs Mastry"
+  },
+  {
+    id: 2,
+    title: "Introduction to algorithm"
+  },
+  {
+    id: 3,
+    title: "How to make money"
+  },
+  {
+    id: 4,
+    title: "Purpose driven life"
+  },
+  {
+    id: 5,
+    title: "React js fundamentals"
+  }
 ];
 
 //Add
-module.exports.add = function(a, b) {
+module.exports.add = function (a, b) {
   return a + b;
 };
 
 //Sub
-module.exports.sub = function(a, b) {
+module.exports.sub = function (a, b) {
   return a - b;
 };
 
 //Mul
-module.exports.mul = function(a, b) {
+module.exports.mul = function (a, b) {
   return a * b;
 };
 
 //Div
-module.exports.div = function(a, b) {
+module.exports.div = function (a, b) {
   return a / b;
 };
 
 // Http get
+app.get('/', (req, res) => {
+  res.send('Hello welcome to emeksense lib. You can test the endpoints by requesting them via the listening port eg. http://localhost:3210/api/books ');
+});
+
 app.get("/api/books", (req, res) => {
   res.send(books);
 });

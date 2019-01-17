@@ -9,7 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "emeksense-lib": "^1.2.0",
     "mongoose": "^5.4.2",
     "underscore": "^1.9.1"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.7"
   }
 }
