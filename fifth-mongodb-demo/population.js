@@ -1,3 +1,26 @@
+// // Trade between query performance and consistency
+
+// // Using References (Normalization)
+// let author = {
+//   name: 'emeksense'
+// }
+
+// let course = {
+//   author: 'id'
+// }
+
+
+// // Using Enbedded Documents (Denormalization)
+
+// let course = {
+//   author: {
+//     name: 'emeksense'
+//   }
+// }
+
+
+
+
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/playground', {
